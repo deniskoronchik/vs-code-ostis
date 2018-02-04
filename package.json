@@ -78,13 +78,13 @@
   "dependencies": {
     "antlr4": "^4.7.0",
     "antlr4ts": "^0.4.1-alpha.0",
-    "pegjs": "^0.10.0",
     "vscode-languageclient": "^3.2.0",
     "vscode-languageserver": "^3.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
+    "antlr4-cli": "^4.5.3",
     "antlr4ts-cli": "^0.4.0-alpha.4",
     "cpx": "^1.5.0",
     "mocha": "^2.3.3",
@@ -92,8 +92,8 @@
     "vscode": "^1.1.0"
   },
   "scripts": {
-    "vscode:prepublish": "antlr4 -Dlanguage=JavaScript src/scs/syntax/scs.g4 && cpx \"src/**/*.js\" out && tsc -p ./",
-    "compile": "antlr4 -Dlanguage=JavaScript src/scs/syntax/scs.g4 && cpx \"src/**/*.js\" out && tsc -watch -p ./",
+    "vscode:prepublish": "antlr4ts -Dlanguage=JavaScript src/scs/syntax/scs.g4 -o src/scs/syntax && cpx \"src/**/*.js\" out && tsc -p ./",
+    "compile": "antlr4ts -Dlanguage=JavaScript src/scs/syntax/scs.g4 -o src/scs/syntax && cpx \"src/**/*.js\" out && tsc -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test"
   }

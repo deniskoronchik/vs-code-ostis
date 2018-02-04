@@ -11,22 +11,20 @@ tokens
 
 @parser::members {
 
-this.parsedData = null;
-this.docUri = '';
+parsedData = null;
+docUri = '';
 
-var self = this;
-
-this.makeLocation = function(obj) {
-  return location = {
+protected makeLocation(obj) {
+  return {
     line: obj.line,
     offset: obj.pos,
     len: obj.text.length
   };
 };
 
-this.makeError = function(token, msg) {
+protected makeError(token, msg) {
   
-  self.parsedData._onAppendError(self.docUri, {
+  this.parsedData._onAppendError(this.docUri, {
     line: token.line - 1,
     offset: token.pos,
     len: token.text.length,
@@ -40,7 +38,6 @@ this.makeError = function(token, msg) {
 ID_SYSTEM 
   : ('a'..'z'|'A'..'Z'|'_'|'.'|'0'..'9'|'#')+
   ;
-
 
 LINK
   : '"' (~('"') | '\\"' )* '"'
@@ -82,25 +79,11 @@ WS :
   ) -> channel(HIDDEN)
   ;
 
-content
-  @init{count = 1; }
-  : ('_')? r='[' 
-    (
-        { count > 0 }?
-        (
-          ~ ('[' | ']')
-          | '[' { count++; }
-          | ']' { count--; }
-        )
-    )*
-    { 
-      var tok = { line: $r.line, pos: $r.pos, text: $r.text};
-      if (count > 0) { this.makeError(tok, "Expected ']' symbol"); }
-    }
-  ;
+// CONTENT_UNICODE : '\u0000'..'\uFFFF' ;
+
+// ------------- Rules --------------------
 
 contour
-  @init{count = 1;}
   : '_'? b='[*' 
     sentence_wrap*
     e='*]'
@@ -110,7 +93,21 @@ contour
     }
   ;
 
-// ------------- Rules --------------------
+content locals[number count = 1]
+  : '_'? r='[' 
+    (
+        { $count > 0 }?
+        (
+          (~ ('[' | ']') | '/')
+          | '[' { $count++; }
+          | ']' { $count--; }
+        )
+    )*
+    { 
+      let tok = { line: $r.line, pos: $r.pos, text: $r.text};
+      if ($count > 0) { this.makeError(tok, "Expected ']' symbol"); }
+    }
+  ;
 
 syntax 
   : sentence_wrap*
