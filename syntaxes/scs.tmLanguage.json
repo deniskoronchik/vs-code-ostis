@@ -56,6 +56,10 @@
 					"name": "keyword.control.scs"
 				},
 				{
+					"match": "(@[a-zA-Z0-9_]+)",
+					"name": "variable.name.scs"
+				},
+				{
 					"match": "\\b([_]?[.]{0,2})?([a-zA-Z0-9_]+)\\b",
 					"name": "variable.other.scs"
 				}

@@ -1,0 +1,5 @@
+@file_alias = "file://...";;
+@link_alias = [];;
+@element_alias = element_idtf;;
+@edge_alias = (c -> b);;
+@alias_to_alias = @other_alias;;

@@ -10,4 +10,4 @@
 *.vsix
 *.log
 
-
+*.lock
